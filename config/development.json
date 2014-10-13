@@ -1,5 +1,10 @@
 {
     "http": {
         "port": 8080
+    },
+    "audio":{
+        "queue": {
+            "interval": 1000
+        }
     }
 }
