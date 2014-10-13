@@ -34,12 +34,19 @@ module.exports = {
     },
     shutup: function (req, res, next){
         var id = req.params.id;
-        streams[id].close();
-        delete streams[id];
+        
+        if(streams && streams[id]){
+            streams[id].close();
+            delete streams[id];
+        }
+
         redis.get('uuid:'+id, function (err, ids){
+            if(err) res.send(500); next();
             _ids = ids.split('-');
             redis.del('uuid:'+id);
             redis.del('id:'+ids);
+            res.send(200);
+            next();
         });
     }
 }
