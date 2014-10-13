@@ -38,7 +38,12 @@ module.exports = {
         if(streams && streams[id]){
             streams[id].close();
             delete streams[id];
+            res.status(200).end();
+        } else {
+            res.status(404).end();
         }
+
+
     },
     erase: function (req, res, next){
         var id = req.params.id;
