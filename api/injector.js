@@ -10,10 +10,16 @@ module.exports = function (app){
 
     // Set middlewares
     app.use(express.static(__dirname + '/public'));
+
+    app.use(function (req, res, next){
+        if(!(req.headers && req.headers['X-User-Token'])) return next();
+        req.userId = req.headers['X-User-Token'];
+    });
+
     //app.use(bodyparser.json()); // Multipart supports it.
     app.use(cookieparser());
     app.use(multipart());
-    app.use(bodyparser.urlencoded({ extended: false}))
+    app.use(bodyparser.urlencoded({extended: false}))
 
     return app;
 }

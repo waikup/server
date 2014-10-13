@@ -3,18 +3,13 @@ var audio = require('./audio');
 
 module.exports = function (app){
     
-    app.get('/api/', v1.main.get);
-    app.post('/api/register', v1.main.get);
-    app.post('/api/login', v1.main.get);
-    app.get('/api/', v1.main.get);
-    app.get('/api/', v1.main.get);
-    app.get('/api/', v1.main.get);
-    app.get('/api/', v1.main.get);
-    app.get('/api/', v1.main.get);
+    // app.get('/api/', v1.main.get);
+    // app.post('/api/register', v1.register.post);
+    // app.post('/api/login', v1.login.post);
 
+    app.get('/client/setup', audio.setup);
+    app.get('/client/shutup/:id', audio.shutup);
     app.get('/stream/:id', audio.addStream);
-    app.get('/client/shutup', v1.main.get);
-    app.get('/client/setup', v1.main.get);
 
     return app;
 }
