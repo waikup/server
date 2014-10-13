@@ -39,7 +39,9 @@ module.exports = {
             streams[id].close();
             delete streams[id];
         }
-
+    },
+    erase: function (req, res, next){
+        var id = req.params.id;
         redis.get('uuid:'+id, function (err, ids){
             if(err){
                 res.status(500).end();
