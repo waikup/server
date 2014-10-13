@@ -12,5 +12,6 @@ var _ = function (modules) {
 }
 
 module.exports = exports = _([
-    'alarms'
+    'alarms',
+    'users'
 ]);

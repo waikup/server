@@ -6,19 +6,21 @@ var async = require('async');
 global.env = (process.env.NODE_ENV || 'development');
 global.config = require('./config/' + env);
 
+mongoose.connect(config.db.url);
+
 var api = require('./api');
 var audio = require('./api/audio');
-var models = require('./models');
+
+var models = require('./models'); // Loads all models
 
 var httpServer = http.createServer(api);
 httpServer.listen(config.http.port);
 
 setInterval(function (){
-    var Alarm = mongoose.model('Alarm');
 
     Alarm.getAlarmsToPerform(function (err, alarms){
         if (err) return console.log(err);
-        if (alarms){
+        if (alarms && alarms.length){
             async.map(alarms, function (alarm, cb){
                 console.log(alarm);
             }, function (err){
@@ -29,4 +31,4 @@ setInterval(function (){
         }
     });
 
-}, 1000);
+}, 60 * 1000);

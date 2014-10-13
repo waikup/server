@@ -30,7 +30,7 @@ module.exports = {
                 client_id: id
             });
 
-        })
+        });
     },
     shutup: function (req, res, next){
         var id = req.params.id;
@@ -47,6 +47,12 @@ module.exports = {
     },
     erase: function (req, res, next){
         var id = req.params.id;
+        
+        if(streams && streams[id]){
+            streams[id].close();
+            delete streams[id];
+        }
+
         redis.get('uuid:'+id, function (err, ids){
             if(err){
                 res.status(500).end();

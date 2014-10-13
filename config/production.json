@@ -6,5 +6,8 @@
         "queue": {
             "interval": 1000
         }
+    },
+    "db": {
+        "url": "mongodb://localhost/wakeup"
     }
 }

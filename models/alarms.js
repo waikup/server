@@ -2,13 +2,20 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Alarm = new Schema({
-    name: String,
     byUserId: String,
-    ts: Number
+    time: Number
 });
 
-Alarm.statics.getAlarmsToPerform = function (cb) {
-    this.find({ts: { $lt: Date.now()+1}}, cb);
+Alarm.statics.getAlarmsToPerform = function (cb){
+    var d = new Date;
+    var time = d.getHours()+d.getMinutes();
+    
+    var Alarm = mongoose.model('Alarm');
+    this.find({time: time}, cb);
+}
+
+Alarm.statics.getForUserId = function (userId, cb){
+    this.find({byUserId: userId}, cb);
 }
 
 module.exports = exports = mongoose.model('Alarm', Alarm);

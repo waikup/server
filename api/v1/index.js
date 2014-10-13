@@ -1,10 +1,19 @@
 var path = require('path');
 
-var _ = function (module) {
-    return require(path.join(__dirname, module));
+var _ = function (modules) {
+    var r = {}
+
+    for (var i in modules){
+        var module = modules[i];
+        r[module] = require(path.join(__dirname, module));
+    }
+
+    return r;
 }
 
-
-module.exports = {
-    main: _('main')
-}
+module.exports = exports = _([
+    'alarm',
+    'login',
+    'main',
+    'register'
+]);
