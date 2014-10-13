@@ -1,6 +1,7 @@
 var bodyparser = require('body-parser'),
     cookieparser = require('cookie-parser'),
     express = require('express'),
+    morgan = require('morgan'),
     multipart = require('connect-multiparty');
 
 module.exports = function (app){
@@ -15,6 +16,10 @@ module.exports = function (app){
         if(!(req.headers && req.headers['X-User-Token'])) return next();
         req.userId = req.headers['X-User-Token'];
     });
+
+    if(env == 'development'){
+        app.use(morgan('dev'));
+    }
 
     //app.use(bodyparser.json()); // Multipart supports it.
     app.use(cookieparser());

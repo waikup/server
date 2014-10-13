@@ -9,7 +9,7 @@ module.exports = function (app){
 
     app.get('/client/setup', audio.setup);
     app.get('/client/shutup/:id', audio.shutup);
-    app.get('/stream/:id', audio.addStream);
+    app.get('/client/stream/:id', audio.addStream);
 
     return app;
 }

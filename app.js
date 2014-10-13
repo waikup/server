@@ -3,8 +3,8 @@ var net = require('net');
 var mongoose = require('mongoose');
 var async = require('async');
 
-global.config = require('./config/' + 
-                (process.env.NODE_ENV || 'development'));
+global.env = (process.env.NODE_ENV || 'development');
+global.config = require('./config/' + env);
 
 var api = require('./api');
 var audio = require('./api/audio');
