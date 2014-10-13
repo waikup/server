@@ -41,11 +41,16 @@ module.exports = {
         }
 
         redis.get('uuid:'+id, function (err, ids){
-            if(err) res.send(500); next();
-            _ids = ids.split('-');
+            if(err){
+                res.status(500).end();
+                next();
+            }
+            if(!ids){
+                res.status(404).end(); next();
+            }
             redis.del('uuid:'+id);
             redis.del('id:'+ids);
-            res.send(200);
+            res.status(200).end();
             next();
         });
     }
