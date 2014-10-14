@@ -12,6 +12,7 @@ var api = require('./api');
 var audio = require('./api/audio');
 
 var models = require('./models'); // Loads all models
+var Alarm = mongoose.model('Alarm');
 
 var httpServer = http.createServer(api);
 httpServer.listen(config.http.port);
