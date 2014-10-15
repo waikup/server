@@ -14,7 +14,8 @@ module.exports = {
             if (!uuid) return res.send({err: 'Device not found'});
             var alarm = Alarm.getForUserId(req.userId);
             if(alarm){
-                alarm.enable();
+                alarm.enable = true;
+                alarm.save();
                 res.send({success: true, connected_to: uuid});
             } else {
                 res.send({err: 'No alarm set'});

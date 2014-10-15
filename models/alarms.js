@@ -21,19 +21,12 @@ Alarm.statics.getAlarmsToPerform = function (cb){
     this.find({time: time}, cb);
 }
 
-Alarm.statics.getForUserId = function (userId){
-    this.find({byUserId: userId}, function (err, doc){
-        if(err) return null;
-        return doc;
-    });
+Alarm.statics.getForUserId = function (userId, cb){
+    this.find({byUserId: userId}, cb);
 }
 
-Alarm.methods.disable = function (){
-    this.enable = false;
-}
+var _ = mongoose.model('Alarm', Alarm);
 
-Alarm.methods.enable = function (){
-    this.enable = true;
-}
+// define prototype here yo
 
-module.exports = exports = mongoose.model('Alarm', Alarm);
+module.exports = exports = _;
