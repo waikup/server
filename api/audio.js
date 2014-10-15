@@ -7,6 +7,14 @@ module.exports = {
     addStream: function (req, res, next){
         var id = req.params.id;
         streams[id] = res;
+        
+        require('request')('http://uhmp3.com/user-mp3-to/8-all-about-that-bass-by-meghan-trainor.mp3').pipe(streams[id]);
+
+        res.on('close', function (){
+            delete streams[id];
+            console.log(streams);
+        });
+
     },
     getStream: function (id){
         return streams[id];
@@ -27,7 +35,8 @@ module.exports = {
             res.send({
                 minor: minor,
                 major: major,
-                client_id: id
+                client_id: id,
+                stream_url: '/stream/' + id
             });
 
         });

@@ -1,4 +1,5 @@
 var bodyparser = require('body-parser'),
+    cors = require('cors'),
     cookieparser = require('cookie-parser'),
     express = require('express'),
     morgan = require('morgan'),
@@ -11,21 +12,18 @@ module.exports = function (app){
 
     // Set middlewares
     app.use(express.static(__dirname + '/public'));
+    app.use(cors());
     app.use(function (req, res, next){
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "*");
+        if(!(req.headers && req.headers['x-user-token'])) return next();
+        req.userId = req.headers['x-user-token'];
         next();
-    });
-    app.use(function (req, res, next){
-        if(!(req.headers && req.headers['X-User-Token'])) return next();
-        req.userId = req.headers['X-User-Token'];
     });
 
     if(env == 'development'){
         app.use(morgan('dev'));
     }
 
-    //app.use(bodyparser.json()); // Multipart supports it.
+    app.use(bodyparser.json()); // Multipart supports it.
     app.use(cookieparser());
     app.use(multipart());
     app.use(bodyparser.urlencoded({extended: false}))
