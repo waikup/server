@@ -7,9 +7,10 @@ var Plugin = new Schema({
 });
 
 var Alarm = new Schema({
-    byUserId: String,
+    fromUser: String,
     time: Number,
-    plugins: [Plugin]
+    plugins: [Plugin],
+    enable: Boolean
 });
 
 Alarm.statics.getAlarmsToPerform = function (cb){
@@ -20,8 +21,19 @@ Alarm.statics.getAlarmsToPerform = function (cb){
     this.find({time: time}, cb);
 }
 
-Alarm.statics.getForUserId = function (userId, cb){
-    this.find({byUserId: userId}, cb);
+Alarm.statics.getForUserId = function (userId){
+    this.find({byUserId: userId}, function (err, doc){
+        if(err) return null;
+        return doc;
+    });
+}
+
+Alarm.methods.disable = function (){
+    this.enable = false;
+}
+
+Alarm.methods.enable = function (){
+    this.enable = true;
 }
 
 module.exports = exports = mongoose.model('Alarm', Alarm);
