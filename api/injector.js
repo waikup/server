@@ -11,7 +11,11 @@ module.exports = function (app){
 
     // Set middlewares
     app.use(express.static(__dirname + '/public'));
-
+    app.use(function (req, res, next){
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "*");
+        next();
+    });
     app.use(function (req, res, next){
         if(!(req.headers && req.headers['X-User-Token'])) return next();
         req.userId = req.headers['X-User-Token'];

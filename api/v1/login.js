@@ -1,5 +1,20 @@
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 module.exports = {
-    post: function (req, res, next){
-        res.send('holi no duermas soli')
+    post: function (req, res){
+        console.log(req.body);
+        User.findOne({
+            username: req.body.username
+        }, function (err, user){
+            if(err) res.end();
+            if(!user) res.send({err: 'User not found'});
+            if(user){
+                if(!user.verify(req.body.password)){
+                    res.send({err: 'Bad access'});
+                } else {
+                    res.send({token: user._id});
+                }
+            }
+        })
     }
 }

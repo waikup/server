@@ -15,5 +15,6 @@ module.exports = exports = _([
     'alarm',
     'login',
     'main',
-    'register'
+    'register',
+    'connect'
 ]);
