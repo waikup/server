@@ -2,9 +2,7 @@ var async = require('async');
 var request = require('request');
 var xml2js = require('xml2js').parseString;
 
-var tts = require(__dirname + '/../../core/helpers/tts');
-
-module.exports = function (attr, _callback){
+module.exports = function (res, attr, _callback){
 
 	console.log('WEATHER SPEAKING')
 	async.waterfall([

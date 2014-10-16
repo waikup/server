@@ -13,8 +13,9 @@ var _ = function (modules) {
 
 module.exports = exports = _([
     'alarm',
+    'connect',
     'login',
     'main',
-    'register',
-    'connect'
+    'plugins',
+    'register'
 ]);

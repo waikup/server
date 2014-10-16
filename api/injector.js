@@ -11,7 +11,9 @@ module.exports = function (app){
     app.set('view engine', 'ejs');
 
     // Set middlewares
-    app.use(express.static(__dirname + '/public'));
+    var staticRoute = process.cwd() + '/public';
+    console.log(staticRoute)
+    app.use('/public', express.static(staticRoute));
     app.use(cors());
 
     app.use(function (req, res, next){
@@ -27,7 +29,7 @@ module.exports = function (app){
     app.use(bodyparser.json()); // Multipart supports it.
     app.use(cookieparser());
     app.use(multipart());
-    app.use(bodyparser.urlencoded({extended: false}))
+    app.use(bodyparser.urlencoded({extended: false}));
 
     return app;
 }

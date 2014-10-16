@@ -16,6 +16,9 @@ module.exports = function (app){
     app.get('/api/alarm', token_middleware, v1.alarm.get);
     app.post('/api/alarm', token_middleware, v1.alarm.post);
 
+    app.get('/api/plugins', v1.plugins.list);
+    app.get('/api/plugin/:id/:route*', v1.plugins.serve);
+
     app.get('/client/setup', audio.setup);
     app.get('/client/shutup/:id', audio.shutup);
     app.get('/client/erase/:id', audio.erase);
