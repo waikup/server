@@ -13,6 +13,7 @@ module.exports = function (app){
     // Set middlewares
     app.use(express.static(__dirname + '/public'));
     app.use(cors());
+
     app.use(function (req, res, next){
         if(!(req.headers && req.headers['x-user-token'])) return next();
         req.userId = req.headers['x-user-token'];

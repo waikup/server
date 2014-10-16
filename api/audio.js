@@ -7,16 +7,9 @@ module.exports = {
     addStream: function (req, res, next){
         var id = req.params.id;
         streams[id] = res;
-        
-        require('request')('http://uhmp3.com/user-mp3-to/8-all-about-that-bass-by-meghan-trainor.mp3').pipe(streams[id]);
-
-        res.on('close', function (){
-            delete streams[id];
-            console.log(streams);
-        });
-
     },
     getStream: function (id){
+        console.log(id);
         return streams[id];
     },
     setup: function (req, res, next){
