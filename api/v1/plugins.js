@@ -1,6 +1,10 @@
-var fs = require('fs');
 var async = require('async');
+var fs = require('fs');
+var mongoose = require('mongoose');
+
 var plugins_path = process.cwd() + '/plugins/';
+
+var Alarm = mongoose.model('Alarm');
 
 module.exports = {
     list: function (req, res, next) {
@@ -20,5 +24,27 @@ module.exports = {
     serve: function (req, res, next) {
         var r = plugins_path + req.params.id + '/' + req.params.route;
         res.sendfile(r);
+    },
+    setInstalled: function (req, res, next) {
+        var id = req.params.id;
+        var alarm = Alarm.getForUserId(req.userId);
+        if(alarm){
+
+        } else {
+            var alarm = new Alarm();
+            alarm.fromUser = req.userId;
+            alarm.plugins = req.body.plugins;
+        }
+
+    },
+    getInstalled: function (req, res, next) {
+        var id = req.params.id;
+        var alarm = Alarm.getForUserId(req.userId);
+        if(alarm){
+            res.send(alarm);
+        } else {
+            res.send({err: 'No alarm set for this user'});
+        }
+
     }
 }
