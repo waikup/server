@@ -16,5 +16,6 @@ Plugin.getConfig = function() {
 
 Plugin.sendConfig = function(attr) {
 	var data = {attr: attr}
+	console.log(data)
 	parent.postMessage(JSON.stringify(data), Plugin.host)
 }

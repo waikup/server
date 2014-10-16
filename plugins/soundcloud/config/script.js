@@ -23,6 +23,7 @@ function appendLi(track) {
 }
 
 $('input').on('keypress', function(e) {
+	alert('pony')
 	$('ul').html('')
 	search($(this).val(), function(tracks) {
 		tracks.forEach(function(track) {
