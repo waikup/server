@@ -1,9 +1,6 @@
 {
-  "name": "meteorology",
+  "name": "weather",
   "description": "",
-  "keywords": [
-    "Soundcloud"
-  ],
   "version": "0.0.1",
   "dependencies": {
     "request": "*",
