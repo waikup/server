@@ -3,7 +3,7 @@ SC.initialize({
 })
 
 $(document).on('ready', function() {
-	var id = Plugin.getConfig()['attr']['id']
+	var id = Plugin.getConfig()['attr']['songId']
 	if (!id) return
 
 	SC.get("/tracks/"+id+".json", null, function(track) {
@@ -17,7 +17,7 @@ function search(query, cb) {
 
 function appendLi(track) {
 	var a = $('<a>').text(track.title).append('<img src="'+track.artwork_url+'">'),
-		li = $('<li>').data('id', track.id).append(a)
+		li = $('<li>').data('songId', track.id).append(a)
 
 	$('ul').append(li)
 }
@@ -32,5 +32,5 @@ $('input').on('keyup', function(e) {
 })
 
 $('ul').on('click', 'li', function() {
-	Plugin.sendConfig({'id': parseInt($(this).data('id'))})
+	Plugin.sendConfig({'songId': parseInt($(this).data('songId'))})
 })
