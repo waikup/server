@@ -18,7 +18,7 @@ Plugin.getConfig = function() {
 
 Plugin.sendConfig = function(attr) {
 	var data = {attr: attr}
-	parent.postMessage(JSON.stringify(data), *)
+	parent.postMessage(JSON.stringify(data), '*')
 	
 	var xhr = new XMLHttpRequest()
 
