@@ -1,5 +1,5 @@
 var Plugin = {
-	host: 'http://localhost:8888'
+	host: 'http://35cb0e44.ngrok.com'
 }
 
 Plugin.getConfig = function() {
