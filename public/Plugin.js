@@ -17,15 +17,14 @@ Plugin.getConfig = function() {
 }
 
 Plugin.sendConfig = function(attr) {
-	var data = {attr: attr}
-	parent.postMessage(JSON.stringify(data), '*')
+	parent.postMessage(JSON.stringify(attr), '*')
 	
-	var xhr = new XMLHttpRequest()
+	/*var xhr = new XMLHttpRequest()
 
 	xhr.open('POST', Plugin.host+'/api/plugin/'+Plugin.id+'/set', true)
 
 	xhr.setRequestHeader("Content-Type", "application/json")
 	xhr.setRequestHeader("X-User-Token", Plugin.token)
 
-	xhr.send(JSON.stringify(attr))
+	xhr.send(JSON.stringify(attr))*/
 }
