@@ -23,8 +23,6 @@ function appendLi(track) {
 }
 
 $('input').on('keypress', function(e) {
-	if (e.which != 13) return
-
 	$('ul').html('')
 	search($(this).val(), function(tracks) {
 		tracks.forEach(function(track) {
