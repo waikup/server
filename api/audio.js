@@ -30,7 +30,7 @@ module.exports = {
         Alarm.getAlarmByUuid(id, function (err, alarm){
             if(err) return res.send(500);
             if(!alarm) return res.send(404);
-
+            console.log(alarm);
             if(running_alarm_step[uuid]){
                 console.log(running_alarm_step[uuid]);
                 running_alarm_step[uuid] += 1;
