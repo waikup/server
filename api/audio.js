@@ -8,7 +8,7 @@ var timeGen = function (){
     var t = new Date;
     var m = t.getMinutes(),
         h = t.getHours()
-    return h + '' + m;
+    return 1111;
 }
 
 var running_alarm_step = {};
@@ -34,26 +34,26 @@ module.exports = {
             if(running_alarm_step[uuid]){
                 console.log(running_alarm_step[uuid]);
                 running_alarm_step[uuid] += 1;
-                var to_run = Object.keys(alarm.plugins)[running_alarm_step];
-                var attr = alarm.plugins[to_run];
+                var to_run = Object.keys(alarm.plugins)[i] || 'alarm';
+                var attr = alarm[to_run] || {};
 
                 playPluginWithId(to_run, attr, res, function (err){
                     console.log(err, 'Pluging finished playing');
                 });
 
-            }
-
-            if (alarm.enable && alarm.time && (alarm.time == timeGen())){
+            } else if ( alarm.enable && alarm.time && (alarm.time.toString() == timeGen()) ){
                 
-                console.log('Starting alarm');
+                var i = running_alarm_step[uuid] = 0;
 
-                var to_run = Object.keys(alarm.plugins)[0];
-                var attr = alarm[to_run];
+                console.log('Starting alarm');
+                alarm.plugins = alarm.plugins || {};
+                var to_run = Object.keys(alarm.plugins)[i];
+                var attr = alarm[to_run] || {};
                 playPluginWithId(to_run, attr, res, function (err){
                     console.log(err, 'Pluging finished playing');
                 });
-
-                running_alarm_step[uuid] = 1;
+            } else {
+                res.send('NON PLAYERINOS');
             }
 
         });

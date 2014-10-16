@@ -27,19 +27,20 @@ module.exports = {
     },
     setInstalled: function (req, res, next) {
         var id = req.params.id;
-        var alarm = Alarm.getForUserId(req.userId);
-        if(alarm){
-            alarm.fromUser = req.userId;
-            alarm.plugins = req.body.plugins;
-            alarm.save();
-            res.send({success: true});
-        } else {
-            var alarm = new Alarm();
-            alarm.fromUser = req.userId;
-            alarm.plugins = req.body.plugins;
-            alarm.save();
-            res.send({success: true});
-        }
+        Alarm.getForUserId(req.userId, function (err, alarm){
+            if(alarm){
+                alarm.fromUser = req.userId;
+                alarm.plugins = req.body.plugins;
+                alarm.save();
+                res.send({success: true});
+            } else {
+                var alarm = new Alarm();
+                alarm.fromUser = req.userId;
+                alarm.plugins = req.body.plugins;
+                alarm.save();
+                res.send({success: true});
+            }
+        });
 
     },
     getInstalled: function (req, res, next) {

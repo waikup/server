@@ -26,11 +26,9 @@ UserSchema.methods.verify = function (password) {
             this.password.split(':')[0]));
 }
 
-UserSchema.statics.isUsernameFree = function (username){
+UserSchema.statics.isUsernameFree = function (username, cb){
     this.findOne({username: username}, function (err, doc){
-        if(err) return false;
-        if(!doc) return true;
-        return false;
+        cb((doc && doc.username) ? false : true);
     });
 }
 
