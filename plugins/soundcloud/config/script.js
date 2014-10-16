@@ -31,6 +31,6 @@ $('input').on('keyup', function(e) {
 	})
 })
 
-$('ul').on('tap', 'li', function() {
+$('ul').on('click', 'li', function() {
 	Plugin.sendConfig({'id': parseInt($(this).data('id'))})
 })
