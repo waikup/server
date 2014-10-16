@@ -1,28 +1,24 @@
 var mongoose = require('mongoose');
+var Plugin = require('./plugin');
 var Schema = mongoose.Schema;
-
-var Plugin = new Schema({
-    uuid: String,
-    settings: Object
-});
-
+var redis = require('redis').createClient();
 var Alarm = new Schema({
     fromUser: String,
     time: Number,
-    plugins: [Plugin],
+    plugins: Object,
     enable: Boolean
 });
 
-Alarm.statics.getAlarmsToPerform = function (cb){
-    var d = new Date();
-    var time = d.getHours()+d.getMinutes();
-    
-    var Alarm = mongoose.model('Alarm');
-    this.find({time: time}, cb);
+Alarm.statics.getAlarmByUuid = function (uuid, cb){
+    redis.get('uuid:user:'+uuid, function (err, userId){
+        var d = new Date();
+        var time = d.getHours()+''+d.getMinutes();
+        this.findOne({fromUser: userId}, cb);
+    })
 }
 
 Alarm.statics.getForUserId = function (userId, cb){
-    this.find({byUserId: userId}, cb);
+    this.find({fromUser: userId}, cb);
 }
 
 var _ = mongoose.model('Alarm', Alarm);

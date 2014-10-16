@@ -16,13 +16,10 @@ module.exports = {
             if (!uuid) return res.send({err: 'Device not found'});
             var alarm = Alarm.getForUserId(req.userId);
             if(alarm){
-                redis.set('user:radio_connection:'+req.userId, uuid);
+                redis.set('uuid:user:'+uuid, req.userId);
                 alarm.enable = true;
                 alarm.save();
                 res.send({success: true, connected_to: uuid});
-                var stream = audio.getStream(uuid);
-                console.log(stream);
-                require('request')('http://uhmp3.com/user-mp3-to/8_wiggle-ft-snoop-dogg-jason-derulo.mp3').pipe(stream);
             } else {
                 res.send({err: 'No alarm set'});
             }

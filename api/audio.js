@@ -1,16 +1,63 @@
 var redis = require('redis').createClient();
 var uuid = require('node-uuid');
+var mongoose = require('mongoose');
 
-var streams = {}
+var Alarm = mongoose.model('Alarm');
+
+var timeGen = function (){
+    var t = new Date;
+    var m = t.getMinutes(),
+        h = t.getHours()
+    return h + '' + m;
+}
+
+var running_alarm_step = {};
+
+var playPluginWithId = function (id, attr, stream, cb){
+    try {
+        var p = require(process.cwd() + '/plugins/' + id + '/index.js');
+        p(stream, attr, cb);
+
+    } catch (e){
+        return res.send('FAILERINO');
+        cb(e);
+    }
+}
 
 module.exports = {
-    addStream: function (req, res, next){
+    stream: function (req, res, next){
         var id = req.params.id;
-        streams[id] = res;
-    },
-    getStream: function (id){
-        console.log(id);
-        return streams[id];
+        Alarm.getAlarmByUuid(id, function (err, alarm){
+            if(err) return res.send(500);
+            if(!alarm) return res.send(404);
+
+            if(running_alarm_step[uuid]){
+                console.log(running_alarm_step[uuid]);
+                running_alarm_step[uuid] += 1;
+                var to_run = Object.keys(alarm.plugins)[running_alarm_step];
+                var attr = alarm.plugins[to_run];
+
+                playPluginWithId(to_run, attr, res, function (err){
+                    console.log(err, 'Pluging finished playing');
+                });
+
+            }
+
+            if (alarm.enable && alarm.time && (alarm.time == timeGen())){
+                
+                console.log('Starting alarm');
+
+                var to_run = Object.keys(alarm.plugins)[0];
+                var attr = alarm[to_run];
+                playPluginWithId(to_run, attr, res, function (err){
+                    console.log(err, 'Pluging finished playing');
+                });
+
+                running_alarm_step[uuid] = 1;
+            }
+
+        });
+
     },
     setup: function (req, res, next){
 

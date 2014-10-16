@@ -13,5 +13,6 @@ var _ = function (modules) {
 
 module.exports = exports = _([
     'alarms',
-    'users'
+    'users',
+    'plugin'
 ]);

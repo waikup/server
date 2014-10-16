@@ -18,11 +18,13 @@ module.exports = function (app){
 
     app.get('/api/plugins', v1.plugins.list);
     app.get('/api/plugin/:id/:route*', v1.plugins.serve);
+    app.get('/api/plugins/installed', token_middleware, v1.plugins.getInstalled);
+    app.post('/api/plugins/installed', token_middleware, v1.plugins.setInstalled);
 
     app.get('/client/setup', audio.setup);
     app.get('/client/shutup/:id', audio.shutup);
     app.get('/client/erase/:id', audio.erase);
-    app.get('/client/stream/:id', audio.addStream);
+    app.get('/client/stream/:id', audio.stream);
 
     return app;
 }
