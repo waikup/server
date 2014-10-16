@@ -1,0 +1,10 @@
+img {
+	float: left;
+	width: 64px;
+	height: 64px;
+	margin-right: 20px;
+}
+
+li {
+	line-height: 64px;
+}

@@ -3,16 +3,28 @@
 <head>
 	<meta charset='utf-8'>
 	<title>SoundCloud</title>
+	<link rel="stylesheet" href="http://35cb0e44.ngrok.com/public/bower_components/framework7/dist/css/framework7.css">
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<div data-page="main" class="page">
+		<div class="page-content">
+		  	<div class="list-block">
+      					<div class="item-content">
+	        				<div class="item-inner">
+	          					<div class="item-input">
+	            					<input type="text" placeholder="Search songs" id='time'>
+	          					</div>
+	      					</div>
+      					</div>
+      			<ul></ul>
+    		</div>
+    	</div>
+    </div>
+
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="http://35cb0e44.ngrok.com/public/Plugin.js"></script>
 	<script src="http://connect.soundcloud.com/sdk.js"></script>
 	<script src="script.js"></script>
-
-	<input type="search" placeholder="Search songs...">
-	<ul>
-	</ul>
 </body>
 </html>
