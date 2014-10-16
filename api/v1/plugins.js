@@ -23,17 +23,22 @@ module.exports = {
     },
     serve: function (req, res, next) {
         var r = plugins_path + req.params.id + '/' + req.params.route;
-        res.sendfile(r);
+        res.sendFile(r);
     },
     setInstalled: function (req, res, next) {
         var id = req.params.id;
         var alarm = Alarm.getForUserId(req.userId);
         if(alarm){
-
+            alarm.fromUser = req.userId;
+            alarm.plugins = req.body.plugins;
+            alarm.save();
+            res.send({success: true});
         } else {
             var alarm = new Alarm();
             alarm.fromUser = req.userId;
             alarm.plugins = req.body.plugins;
+            alarm.save();
+            res.send({success: true});
         }
 
     },
@@ -41,7 +46,7 @@ module.exports = {
         var id = req.params.id;
         var alarm = Alarm.getForUserId(req.userId);
         if(alarm){
-            res.send(alarm);
+            res.send(alarm.plugins);
         } else {
             res.send({err: 'No alarm set for this user'});
         }
