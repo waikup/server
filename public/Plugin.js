@@ -6,17 +6,11 @@ Plugin.getConfig = function() {
 	var hashes = window.location.hash.split('#')[1].split('&'),
 		args = {attr:{}}
 
-	console.log('[Plugin] '+hashes)
-
 	hashes.forEach(function(val) {
-		console.log('[Plugin] '+val)
 		var v = val.split('=')
 		args[v[0]] = JSON.parse(decodeURIComponent(v[1]))
 	})
 
-	console.log('[Plugin]')
-	console.log(args)
-	args.attr = JSON.parse(args.attr)
 	return args
 }
 
