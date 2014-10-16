@@ -1,3 +1,6 @@
 {
-	"name": "Alarm"
+	"name": "Alarm",
+    "dependencies": {
+        "request": "*"
+    }
 }

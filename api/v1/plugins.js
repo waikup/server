@@ -44,12 +44,12 @@ module.exports = {
     },
     getInstalled: function (req, res, next) {
         var id = req.params.id;
-        var alarm = Alarm.getForUserId(req.userId);
-        if(alarm){
-            res.send(alarm.plugins);
-        } else {
-            res.send({err: 'No alarm set for this user'});
-        }
-
+        Alarm.getForUserId(req.userId, function (err, alarm){
+            if(alarm){
+                res.send(alarm.plugins || {});
+            } else {
+                res.send({err: 'No alarm set for this user'});
+            }
+        });
     }
 }
