@@ -14,15 +14,14 @@ module.exports = {
         redis.get('id:'+ma+'-'+mi, function (err, uuid){
             if (err) return res.send({err: 'Internal error'});
             if (!uuid) return res.send({err: 'Device not found'});
-            var alarm = Alarm.getForUserId(req.userId);
-            if(alarm){
-                redis.set('uuid:user:'+uuid, req.userId);
-                alarm.enable = true;
-                alarm.save();
-                res.send({success: true, connected_to: uuid});
-            } else {
-                res.send({err: 'No alarm set'});
-            }
+            Alarm.getForUserId(req.userId, function (err, alarm){
+                if(alarm){
+                    redis.set('uuid:user:'+uuid, req.userId);
+                    res.send({success: true, connected_to: uuid});
+                } else {
+                    res.send({err: 'No alarm set'});
+                }
+            });
         });
     }
 }
