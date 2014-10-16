@@ -22,8 +22,7 @@ function appendLi(track) {
 	$('ul').append(li)
 }
 
-$('input').on('keypress', function(e) {
-	alert('pony')
+$('input').on('keyup', function(e) {
 	$('ul').html('')
 	search($(this).val(), function(tracks) {
 		tracks.forEach(function(track) {
