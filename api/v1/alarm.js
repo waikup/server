@@ -4,33 +4,34 @@ var models = require(process.cwd() + '/models');
 var Alarm = mongoose.model('Alarm');
 
 module.exports = {
-    get: function (req, res, next){
+    enable: function (req, res, next){
         var userId = req.userId;
         Alarm.getForUserId(userId, function (err, alarm){
-            if(err) res.status(500).end(); next;
-            if(alarm && alarm[0]){
-                res.send(alarm[0]);
-            } else {
-                res.status(404).end();
-            }
+            if(err) return res.send({err: err});
+            if (!req.body.time) return res.send({err: 'No time provided'});
+            console.log(alarm);
+            if(!alarm) alarm = new Alarm();
+            alarm.fromUser = req.userId;
+            alarm.enable = true;
+            alarm.time = req.body.time;
+            alarm.save();
+            res.send({success: true});
         });
     },
-    post: function (req, res, next){
+    disable: function (req, res, next){
         var userId = req.userId;
-        
         Alarm.getForUserId(userId, function (err, alarm){
-            if(err) res.status(500).end(); next;
-            if(!(alarm && alarm[0])){
-                alarm = new Alarm;
-            }
-
-            alarm.byUserId = userId;
-            alarm.ts = req.body.time;
-            alarm.save(function (err){
-                if (err) res.status(500).end(); next;
-                res.status(200).end(); next();
-            });
-
+            if(err) return res.send({err: err});
+            alarm.enable = false;
+            alarm.save();
+            res.send({success: true});
+        });
+    },
+    getAlarm: function (req, res, next){
+        var userId = req.userId;
+        Alarm.getForUserId(userId, function (err, alarm){
+            if(err) return res.send({err: err});
+            res.send(alarm || {});
         });
     }
 }
