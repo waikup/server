@@ -17,6 +17,7 @@ module.exports = function (app){
     app.get('/api/plugin/:id/:route(*)', v1.plugins.serve);
     app.get('/api/plugins/installed', token_middleware, v1.plugins.getInstalled);
     app.post('/api/plugins/installed', token_middleware, v1.plugins.setInstalled);
+    app.post('/api/plugin/:id/set', token_middleware, v1.plugins.setPlugin);
 
     app.post('/api/enable/', v1.alarm.enable);
     app.post('/api/disable/', v1.alarm.disable);

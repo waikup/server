@@ -25,6 +25,19 @@ module.exports = {
         var r = plugins_path + req.params.id + '/' + req.params.route;
         res.sendFile(r);
     },
+    setPlugin: function (req, res, next){
+        var id = req.params.id;
+        Alarm.getForUserId(req.userId, function (err, alarm){
+            if(alarm && alarm.plugins && alarm.plugins[id]){
+                alarm.fromUser = req.userId;
+                alarm.plugins[req.params.id] = req.body;
+                alarm.save();
+                res.send({success: true});
+            } else {
+                res.send({err: 'Alarm or plugin not found'});
+            }
+        });
+    },
     setInstalled: function (req, res, next) {
         var id = req.params.id;
         Alarm.getForUserId(req.userId, function (err, alarm){
