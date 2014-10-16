@@ -25,21 +25,9 @@ module.exports = {
         var r = plugins_path + req.params.id + '/' + req.params.route;
         res.sendFile(r);
     },
-    setPlugin: function (req, res, next){
-        var id = req.params.id;
-        Alarm.getForUserId(req.userId, function (err, alarm){
-            if(alarm && alarm.plugins && alarm.plugins[id]){
-                alarm.fromUser = req.userId;
-                alarm.plugins[req.params.id] = req.body;
-                alarm.save();
-                res.send({success: true});
-            } else {
-                res.send({err: 'Alarm or plugin not found'});
-            }
-        });
-    },
     setInstalled: function (req, res, next) {
         var id = req.params.id;
+        console.log(id);
         Alarm.getForUserId(req.userId, function (err, alarm){
             if(alarm){
                 alarm.fromUser = req.userId;
@@ -62,7 +50,7 @@ module.exports = {
             if(alarm){
                 res.send(alarm.plugins || {});
             } else {
-                res.send({err: 'No alarm set for this user'});
+                res.send({err: 'No alarm set for this user '});
             }
         });
     }

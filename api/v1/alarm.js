@@ -22,6 +22,7 @@ module.exports = {
         var userId = req.userId;
         Alarm.getForUserId(userId, function (err, alarm){
             if(err) return res.send({err: err});
+            if (!alarm) return res.send({err: 'No alarm set'});
             alarm.enable = false;
             alarm.save();
             res.send({success: true});

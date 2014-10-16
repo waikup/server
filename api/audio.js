@@ -19,7 +19,8 @@ var playPluginWithId = function (id, attr, stream, cb){
         p(stream, attr, cb);
 
     } catch (e){
-        return res.send('FAILERINO');
+        console.log(e);
+        return stream.status(500).send('FAILERINO');
         cb(e);
     }
 }
@@ -41,7 +42,7 @@ module.exports = {
                     console.log(err, 'Pluging finished playing');
                 });
 
-            } else if ( alarm.enable && alarm.time && (alarm.time.toString() == timeGen()) ){
+            } else if ( alarm.enable && alarm.time /*&& (alarm.time.toString() == timeGen())*/ ){
                 
                 var i = running_alarm_step[uuid] = 0;
 
