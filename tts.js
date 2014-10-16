@@ -11,4 +11,4 @@ var tts = function(text, lang) {
   	})
 }
 
-module.exports = tts
+module.exports = tts;
