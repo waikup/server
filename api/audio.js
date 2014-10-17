@@ -14,6 +14,7 @@ var timeGen = function (){
 }
 
 var running_alarm_step = {};
+var running_alarm_step_counter = {};
 
 var playPluginWithId = function (id, attr, stream, cb){
     try {
@@ -30,47 +31,60 @@ var playPluginWithId = function (id, attr, stream, cb){
 module.exports = {
     stream: function (req, res, next){
         var id = req.params.id;
-        console.log('HOLA');
-        request('http://api.soundcloud.com/tracks/165242233/stream?client_id=5a8edbed865ed2b31acf4d9720696e7f').pipe(res);
-        // Alarm.getAlarmByUuid(id, function (err, alarm){
-        //     if(err) return res.send(500);
-        //     if(!alarm) return res.send(404);
 
-        //     if(running_alarm_step && running_alarm_step['a']){
-                
-        //         // console.log('STEP:' + running_alarm_step[uuid]);
-        //         // var i = running_alarm_step[uuid];
-                
-        //         // var to_run = Object.keys(alarm.plugins)[i];
+        Alarm.getAlarmByUuid(id, function (err, alarm){
+            if(err) return res.send(500);
+            if(!alarm) return res.send(404);
 
-        //         // if(!to_run){
-        //         //     console.log('NOMOAR');
-        //         //     delete running_alarm_step[uuid];
-        //         //     return res.send(404);
-        //         // }
+            if(running_alarm_step_counter[uuid] == undefined){
+                console.log('FIRST REQUEST');
+                running_alarm_step_counter[uuid] = 0;
+            }
 
-        //         // console.log('RUN-STEP', to_run);
+            if(running_alarm_step_counter[uuid] % 2 == 0){
+                running_alarm_step_counter[uuid] += 1;
+
+                console.log('IGNORING REQUEST');
+
+                return res.send(500);
+            } else {
+
+                if(running_alarm_step && running_alarm_step[uuid] >= 0){
+                    
+                    console.log('STEP:' + running_alarm_step[uuid]);
+                    var i = running_alarm_step[uuid];
+                    
+                    var to_run = Object.keys(alarm.plugins)[i];
+
+                    if(!to_run){
+                        console.log('NOMOAR');
+                        delete running_alarm_step[uuid];
+                        return res.send(404);
+                    }
+
+                    console.log('RUN-STEP', to_run);
 
 
-        //         // var attr = alarm.plugins[to_run] || {};
-        //         // running_alarm_step[uuid] += 1;
-        //         console.log('HOLA');
-        //         playPluginWithId('alarm', {}, res, function (err){
-        //             console.log(err, 'Pluging finished playing');
-        //         });
+                    var attr = alarm.plugins[to_run] || {};
+                    running_alarm_step[uuid] += 1;
+                    playPluginWithId(to_run, attr, res, function (err){
+                        console.log(err, 'Pluging finished playing');
+                    });
 
-        //     } else if ( alarm.enable && alarm.time /*&& (alarm.time.toString() == timeGen())*/ ){
-        //         console.log('HOLA1');
-        //         running_alarm_step['a'] = 1;
-        //         playPluginWithId('soundcloud', {}, res, function (err){
-        //             console.log(err, 'Pluging finished playing');
-        //         });
+                } else if ( alarm.enable && alarm.time ){
+                    console.log('Saying good morning');
+                    running_alarm_step[uuid] = 0;
+                    playPluginWithId('alarm', {text: 'Good morning!', lang: 'en'}, res, function (err){
+                        console.log(err, 'Pluging finished playing');
+                    });
 
-        //     } else {
-        //         res.send('NON PLAYERINOS');
-        //     }
+                } else {
+                    res.send('NON PLAYERINOS');
+                }
 
-        // });
+                }
+
+        });
 
     },
     setup: function (req, res, next){

@@ -14,7 +14,7 @@ Alarm.statics.getAlarmByUuid = function (uuid, cb){
     redis.get('uuid:user:'+uuid, function (err, userId){
         var d = new Date();
         var time = d.getHours()+''+d.getMinutes();
-        m.findOne({fromUser: '544029c9e670f41eb1954656'}, cb);
+        m.findOne({fromUser: userId}, cb);
     });
 }
 
