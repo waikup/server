@@ -2,6 +2,8 @@ var redis = require('redis').createClient();
 var uuid = require('node-uuid');
 var mongoose = require('mongoose');
 
+var request = require('request');
+
 var Alarm = mongoose.model('Alarm');
 
 var timeGen = function (){
@@ -28,36 +30,47 @@ var playPluginWithId = function (id, attr, stream, cb){
 module.exports = {
     stream: function (req, res, next){
         var id = req.params.id;
-        Alarm.getAlarmByUuid(id, function (err, alarm){
-            if(err) return res.send(500);
-            if(!alarm) return res.send(404);
-            console.log(alarm);
-            if(running_alarm_step[uuid]){
-                console.log(running_alarm_step[uuid]);
-                running_alarm_step[uuid] += 1;
-                var to_run = Object.keys(alarm.plugins)[i] || 'alarm';
-                var attr = alarm[to_run] || {};
+        console.log('HOLA');
+        request('http://api.soundcloud.com/tracks/165242233/stream?client_id=5a8edbed865ed2b31acf4d9720696e7f').pipe(res);
+        // Alarm.getAlarmByUuid(id, function (err, alarm){
+        //     if(err) return res.send(500);
+        //     if(!alarm) return res.send(404);
 
-                playPluginWithId(to_run, attr, res, function (err){
-                    console.log(err, 'Pluging finished playing');
-                });
-
-            } else if ( alarm.enable && alarm.time /*&& (alarm.time.toString() == timeGen())*/ ){
+        //     if(running_alarm_step && running_alarm_step['a']){
                 
-                var i = running_alarm_step[uuid] = 0;
+        //         // console.log('STEP:' + running_alarm_step[uuid]);
+        //         // var i = running_alarm_step[uuid];
+                
+        //         // var to_run = Object.keys(alarm.plugins)[i];
 
-                console.log('Starting alarm');
-                alarm.plugins = alarm.plugins || {};
-                var to_run = Object.keys(alarm.plugins)[i];
-                var attr = alarm[to_run] || {};
-                playPluginWithId(to_run, attr, res, function (err){
-                    console.log(err, 'Pluging finished playing');
-                });
-            } else {
-                res.send('NON PLAYERINOS');
-            }
+        //         // if(!to_run){
+        //         //     console.log('NOMOAR');
+        //         //     delete running_alarm_step[uuid];
+        //         //     return res.send(404);
+        //         // }
 
-        });
+        //         // console.log('RUN-STEP', to_run);
+
+
+        //         // var attr = alarm.plugins[to_run] || {};
+        //         // running_alarm_step[uuid] += 1;
+        //         console.log('HOLA');
+        //         playPluginWithId('alarm', {}, res, function (err){
+        //             console.log(err, 'Pluging finished playing');
+        //         });
+
+        //     } else if ( alarm.enable && alarm.time /*&& (alarm.time.toString() == timeGen())*/ ){
+        //         console.log('HOLA1');
+        //         running_alarm_step['a'] = 1;
+        //         playPluginWithId('soundcloud', {}, res, function (err){
+        //             console.log(err, 'Pluging finished playing');
+        //         });
+
+        //     } else {
+        //         res.send('NON PLAYERINOS');
+        //     }
+
+        // });
 
     },
     setup: function (req, res, next){
@@ -84,16 +97,7 @@ module.exports = {
     },
     shutup: function (req, res, next){
         var id = req.params.id;
-        
-        if(streams && streams[id]){
-            streams[id].close();
-            delete streams[id];
-            res.status(200).end();
-        } else {
-            res.status(404).end();
-        }
-
-
+        res.status(200).end();
     },
     erase: function (req, res, next){
         var id = req.params.id;
