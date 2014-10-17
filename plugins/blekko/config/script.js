@@ -2,7 +2,7 @@ var toDisable = ['linkBindingEnabled', 'hashListeningEnabled', 'pushStateEnabled
 for (var i in toDisable)
 	eval('$.mobile["'+toDisable[i]+'"] = false')
 
-var attr = Plugin.getConfig()['attr']
+var attr = Plugin.getConfig()
 
 $(document).on('ready', function() {
 	$('#category').val(attr['category'])
